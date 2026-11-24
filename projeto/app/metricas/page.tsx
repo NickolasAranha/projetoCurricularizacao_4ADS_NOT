@@ -74,12 +74,12 @@ export default async function PaginaMetricas() {
           <Linha
             rotulo="Tempo médio até publicar"
             valor={numero(tempo?.media_min, " min")}
-            detalhe={`mediana ${numero(tempo?.mediana_min, " min")} · ${tempo?.concluidas ?? 0} cadastros`}
+            detalhe={`Mediana: ${numero(tempo?.mediana_min, " min")}. Em ${tempo?.concluidas ?? 0} cadastros publicados.`}
           />
           <Linha
             rotulo="Só quando a IA respondeu"
             valor={numero(tempo?.media_min_com_ia, " min")}
-            detalhe={`mediana ${numero(tempo?.mediana_min_com_ia, " min")}`}
+            detalhe={`Mediana: ${numero(tempo?.mediana_min_com_ia, " min")}.`}
           />
           <Linha rotulo="Tempo médio até a IA responder" valor={numero(tempo?.media_min_ate_ia, " min")} />
           <Linha
@@ -130,7 +130,7 @@ export default async function PaginaMetricas() {
           <Linha
             rotulo="Pontuação SUS média (0 a 100)"
             valor={numero(usabilidade?.sus_medio)}
-            detalhe={`68 é a média de referência · ${usabilidade?.n ?? 0} respostas`}
+            detalhe={`Referência de mercado: 68. Em ${usabilidade?.n ?? 0} respostas.`}
           />
           <Linha rotulo="Satisfação geral (1 a 5)" valor={numero(usabilidade?.satisfacao_media)} />
           <Linha rotulo="Facilidade de uso (1 a 5)" valor={numero(usabilidade?.facilidade_media)} />

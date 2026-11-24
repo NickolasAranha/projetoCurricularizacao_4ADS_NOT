@@ -1,42 +1,83 @@
 @import "tailwindcss";
 
-/* Estilos base provisórios. A identidade visual definitiva entra na Tarefa 11. */
-
 :root {
-  --fundo: #faf6ef;
-  --tinta: #2b2118;
-  --destaque: #a4532f;
-  --borda: #d9cbb6;
-  --erro: #9b2c1f;
+  --papel: #efe7d8;
+  --kraft: #d6bf98;
+  --kraft-escuro: #b89a6c;
+  --tinta: #2a1f17;
+  --tinta-suave: #64533f;
+  --barro: #8a3a20;
+  --barro-escuro: #6f2d18;
+  --musgo: #45552c;
+  --musgo-escuro: #36431f;
+  --borda: #cbb894;
+  --branco: #fbf8f2;
+  --erro: #8f1f12;
 }
 
 @theme inline {
-  --color-fundo: var(--fundo);
+  --color-papel: var(--papel);
+  --color-kraft: var(--kraft);
   --color-tinta: var(--tinta);
-  --color-destaque: var(--destaque);
+  --color-tinta-suave: var(--tinta-suave);
+  --color-barro: var(--barro);
+  --color-musgo: var(--musgo);
   --color-borda: var(--borda);
+  --color-branco: var(--branco);
+  --font-titulo: var(--fonte-titulo);
+  --font-sans: var(--fonte-texto);
 }
 
 body {
-  background: var(--fundo);
+  background-color: var(--papel);
+  /* Fibra de papel kraft: ruído em tom único, sem gradiente de cor */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .15 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
   color: var(--tinta);
-  font-family: system-ui, sans-serif;
+  font-family: var(--fonte-texto), system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--fonte-titulo), Georgia, serif;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 3px solid var(--barro);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 
 @layer components {
   .titulo-pagina {
-    font-size: 1.75rem;
+    font-family: var(--fonte-titulo), Georgia, serif;
+    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
     font-weight: 600;
-    line-height: 1.2;
+    line-height: 1.15;
   }
 
   .campo {
     min-height: 48px;
-    padding: 8px 12px;
-    border: 1px solid var(--borda);
-    border-radius: 8px;
-    background: #fff;
+    padding: 10px 12px;
+    border: 1px solid var(--kraft-escuro);
+    border-radius: 6px;
+    background: var(--branco);
+    color: var(--tinta);
     font-size: 1rem;
+  }
+
+  .campo:focus-visible {
+    outline-offset: 0;
   }
 
   .botao-primario,
@@ -45,27 +86,81 @@ body {
     min-height: 48px;
     align-items: center;
     justify-content: center;
-    padding: 8px 20px;
-    border-radius: 8px;
+    padding: 10px 22px;
+    border-radius: 10px;
     font-weight: 600;
+    text-align: center;
+    transition:
+      background-color 150ms,
+      border-color 150ms;
   }
 
   .botao-primario {
-    background: var(--destaque);
-    color: #fff;
+    background: var(--barro);
+    color: var(--branco);
+  }
+
+  .botao-primario:hover {
+    background: var(--barro-escuro);
   }
 
   .botao-primario:disabled {
-    opacity: 0.6;
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .botao-whatsapp {
+    background: var(--musgo);
+  }
+
+  .botao-whatsapp:hover {
+    background: var(--musgo-escuro);
   }
 
   .botao-secundario {
-    border: 1px solid var(--borda);
-    background: #fff;
+    border: 1px solid var(--kraft-escuro);
+    background: var(--branco);
+    color: var(--tinta);
+  }
+
+  .botao-secundario:hover {
+    border-color: var(--tinta-suave);
+  }
+
+  .botao-secundario[aria-current="page"],
+  .botao-primario[aria-current="page"] {
+    background: var(--tinta);
+    border-color: var(--tinta);
+    color: var(--branco);
   }
 
   .aviso-erro {
     color: var(--erro);
     font-weight: 500;
+  }
+
+  /* Etiqueta de preço de feira: papel kraft com furo e barbante */
+  .etiqueta {
+    position: relative;
+    display: inline-block;
+    padding: 4px 12px 4px 22px;
+    background: var(--kraft);
+    color: var(--tinta);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
+  }
+
+  .etiqueta::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    border-radius: 50%;
+    background: var(--papel);
+    box-shadow: inset 0 0 0 1px var(--kraft-escuro);
   }
 }

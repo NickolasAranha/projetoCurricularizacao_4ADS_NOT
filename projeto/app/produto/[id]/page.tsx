@@ -41,7 +41,7 @@ export default async function PaginaProduto(props: PageProps<"/produto/[id]">) {
               key={foto}
               src={urlPublicaFoto(foto)}
               alt={i === 0 ? (produto.titulo ?? "") : ""}
-              className="w-full rounded-lg object-cover"
+              className="w-full rounded-md object-cover"
             />
           ))}
         </section>
@@ -54,7 +54,9 @@ export default async function PaginaProduto(props: PageProps<"/produto/[id]">) {
           )}
           <h1 className="titulo-pagina">{produto.titulo}</h1>
           {produto.preco_centavos ? (
-            <p className="text-2xl font-semibold">{formatarReais(produto.preco_centavos)}</p>
+            <p>
+              <span className="etiqueta -rotate-1 text-2xl">{formatarReais(produto.preco_centavos)}</span>
+            </p>
           ) : null}
           {produto.descricao && <p className="whitespace-pre-line">{produto.descricao}</p>}
 
