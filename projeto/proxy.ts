@@ -32,6 +32,8 @@ export async function proxy(request: NextRequest) {
   return resposta;
 }
 
+// Só as áreas que usam o login. Catálogo, vitrine, produto e carrinho não leem a sessão,
+// então não pagam a ida ao Supabase a cada clique.
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|webp)$).*)"],
+  matcher: ["/painel/:path*", "/api/:path*"],
 };
