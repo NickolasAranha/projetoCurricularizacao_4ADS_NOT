@@ -1,26 +1,71 @@
 @import "tailwindcss";
 
+/* Estilos base provisórios. A identidade visual definitiva entra na Tarefa 11. */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --fundo: #faf6ef;
+  --tinta: #2b2118;
+  --destaque: #a4532f;
+  --borda: #d9cbb6;
+  --erro: #9b2c1f;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-fundo: var(--fundo);
+  --color-tinta: var(--tinta);
+  --color-destaque: var(--destaque);
+  --color-borda: var(--borda);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--fundo);
+  color: var(--tinta);
+  font-family: system-ui, sans-serif;
+}
+
+@layer components {
+  .titulo-pagina {
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .campo {
+    min-height: 48px;
+    padding: 8px 12px;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    background: #fff;
+    font-size: 1rem;
+  }
+
+  .botao-primario,
+  .botao-secundario {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .botao-primario {
+    background: var(--destaque);
+    color: #fff;
+  }
+
+  .botao-primario:disabled {
+    opacity: 0.6;
+  }
+
+  .botao-secundario {
+    border: 1px solid var(--borda);
+    background: #fff;
+  }
+
+  .aviso-erro {
+    color: var(--erro);
+    font-weight: 500;
+  }
 }
