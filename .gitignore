@@ -1,0 +1,25 @@
+# Dependências e build
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Vercel e Supabase local
+.vercel/
+supabase/.temp/
+supabase/.branches/
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
