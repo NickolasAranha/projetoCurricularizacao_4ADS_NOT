@@ -5,6 +5,7 @@ import { buscarProdutoPublicado } from "@/lib/consultas";
 import { urlPublicaFoto } from "@/lib/storage";
 import { formatarReais } from "@/lib/dinheiro";
 import { categoriaPorId } from "@/lib/categorias";
+import { AcoesProduto } from "@/components/carrinho/AcoesProduto";
 
 export async function generateMetadata(props: PageProps<"/produto/[id]">): Promise<Metadata> {
   const { id } = await props.params;
@@ -65,6 +66,23 @@ export default async function PaginaProduto(props: PageProps<"/produto/[id]">) {
               ))}
             </dl>
           )}
+
+          {produto.preco_centavos && produto.titulo ? (
+            <AcoesProduto
+              item={{
+                produtoId: produto.id,
+                titulo: produto.titulo,
+                precoCentavos: produto.preco_centavos,
+                capa: produto.capa,
+                artesao: {
+                  id: produto.artesao.id,
+                  slug: produto.artesao.slug,
+                  nome: produto.artesao.nome_exibicao,
+                  whatsapp: produto.artesao.whatsapp,
+                },
+              }}
+            />
+          ) : null}
 
           <p>
             Feito por{" "}

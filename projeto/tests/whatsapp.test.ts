@@ -24,3 +24,13 @@ describe("normalizarWhatsapp", () => {
     expect(normalizarWhatsapp("abc")).toBeNull();
   });
 });
+
+import { linkWhatsapp } from "@/lib/whatsapp";
+
+describe("linkWhatsapp", () => {
+  it("codifica símbolos, acentos e quebras de linha", () => {
+    const link = linkWhatsapp("5511987654321", "Bolo & café #1? 100%\nOlá");
+    expect(link.startsWith("https://wa.me/5511987654321?text=")).toBe(true);
+    expect(decodeURIComponent(link.split("?text=")[1])).toBe("Bolo & café #1? 100%\nOlá");
+  });
+});
