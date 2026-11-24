@@ -1,0 +1,24 @@
+import "server-only";
+import { createServerClient } from "@supabase/ssr";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
+
+export async function criarClienteServidor(): Promise<SupabaseClient> {
+  const cookieStore = await cookies();
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => cookieStore.getAll(),
+        setAll: (lista) => {
+          try {
+            lista.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+          } catch {
+            // Chamado de um Server Component: o proxy.ts renova a sessão.
+          }
+        },
+      },
+    },
+  );
+}
