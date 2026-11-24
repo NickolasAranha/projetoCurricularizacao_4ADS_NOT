@@ -25,7 +25,6 @@ export function registrarEvento(evento: Evento): void {
       headers: {
         "Content-Type": "application/json",
         apikey: chave,
-        Authorization: `Bearer ${chave}`,
         Prefer: "return=minimal",
       },
       body: JSON.stringify({
