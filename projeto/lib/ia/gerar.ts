@@ -2,6 +2,7 @@ import "server-only";
 import { GoogleGenAI } from "@google/genai";
 import { interpretarRespostaIA, type RespostaIA } from "./esquema";
 import { ESQUEMA_JSON, montarPrompt } from "./prompt";
+import { comRetentativa } from "./retentar";
 
 export const TEMPO_LIMITE_IA_MS = 45_000;
 
@@ -21,16 +22,20 @@ export async function gerarProduto(entrada: EntradaGeracao): Promise<RespostaIA>
       { text: montarPrompt(entrada.texto ?? null) },
     ];
 
-    const resposta = await ia.models.generateContent({
-      model: process.env.GEMINI_MODEL ?? "gemini-4-hydrogen",
-      contents: [{ role: "user", parts: partes }],
-      config: {
-        responseMimeType: "application/json",
-        responseJsonSchema: ESQUEMA_JSON,
-        temperature: 0.4,
-        abortSignal: controle.signal,
-      },
-    });
+    const resposta = await comRetentativa(
+      () =>
+        ia.models.generateContent({
+          model: process.env.GEMINI_MODEL ?? "gemini-4-hydrogen",
+          contents: [{ role: "user", parts: partes }],
+          config: {
+            responseMimeType: "application/json",
+            responseJsonSchema: ESQUEMA_JSON,
+            temperature: 0.4,
+            abortSignal: controle.signal,
+          },
+        }),
+      { tentativas: 3, esperaMs: 1000, sinal: controle.signal },
+    );
 
     return interpretarRespostaIA(JSON.parse(resposta.text ?? "null"));
   } finally {
