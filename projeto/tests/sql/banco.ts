@@ -6,7 +6,7 @@ import path from "node:path";
 const PASTA_MIGRACOES = path.join(__dirname, "../../supabase/migrations");
 
 const STUBS_SUPABASE = `
-create role anon; create role authenticated; create role service_role;
+create role anon; create role authenticated; create role service_role bypassrls;
 create schema auth;
 create table auth.users (id uuid primary key);
 create function auth.uid() returns uuid language sql stable
@@ -17,10 +17,10 @@ create table storage.objects (id uuid primary key default gen_random_uuid(), buc
 alter table storage.objects enable row level security;
 create function storage.foldername(name text) returns text[] language sql immutable
   as $$ select string_to_array(name, '/') $$;
-grant usage on schema public, auth, storage to anon, authenticated;
-alter default privileges in schema public grant all on tables to anon, authenticated;
-alter default privileges in schema public grant all on sequences to anon, authenticated;
-grant all on all tables in schema storage to anon, authenticated;
+-- Como nos projetos novos do Supabase: as tabelas de public não têm permissão nenhuma
+-- por padrão, e cada migração precisa conceder o que usa.
+grant usage on schema public, auth, storage to anon, authenticated, service_role;
+grant all on all tables in schema storage to anon, authenticated, service_role;
 `;
 
 export const MARIA = "00000000-0000-0000-0000-00000000000a";
@@ -43,6 +43,15 @@ export async function criarBanco(): Promise<PGlite> {
 
 export async function comoAnonimo<T>(db: PGlite, sql: string): Promise<T[]> {
   await db.exec("reset test.uid; set role anon;");
+  try {
+    return (await db.query<T>(sql)).rows;
+  } finally {
+    await db.exec("reset role;");
+  }
+}
+
+export async function comoServico<T>(db: PGlite, sql: string): Promise<T[]> {
+  await db.exec("reset test.uid; set role service_role;");
   try {
     return (await db.query<T>(sql)).rows;
   } finally {
