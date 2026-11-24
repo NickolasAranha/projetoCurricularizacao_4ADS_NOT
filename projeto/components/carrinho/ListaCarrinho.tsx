@@ -7,9 +7,11 @@ import { urlPublicaFoto } from "@/lib/storage";
 import { useCarrinho } from "./useCarrinho";
 import { BotaoComprarWhatsapp } from "./BotaoComprarWhatsapp";
 import { SeletorQuantidade } from "./SeletorQuantidade";
+import { useConferirCarrinho } from "./useConferirCarrinho";
 
 export function ListaCarrinho() {
-  const { itens, mudarQuantidade, esvaziarArtesao } = useCarrinho();
+  const { itens, mudarQuantidade, esvaziarArtesao, atualizar } = useCarrinho();
+  useConferirCarrinho(itens, atualizar);
   const grupos = agruparPorArtesao(itens);
 
   if (!grupos.length) {

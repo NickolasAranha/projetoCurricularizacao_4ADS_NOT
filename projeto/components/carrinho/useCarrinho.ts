@@ -51,8 +51,13 @@ export function useCarrinho() {
     [],
   );
   const esvaziarArtesao = useCallback((artesaoId: string) => gravar(removerArtesao(ler(), artesaoId)), []);
+  const atualizar = useCallback((transformar: (atuais: ItemCarrinho[]) => ItemCarrinho[]) => {
+    const atuais = ler();
+    const novos = transformar(atuais);
+    if (novos !== atuais) gravar(novos);
+  }, []);
 
   const totalItens = itens.reduce((soma, i) => soma + i.quantidade, 0);
 
-  return { itens, totalItens, adicionar, mudarQuantidade, esvaziarArtesao };
+  return { itens, totalItens, adicionar, mudarQuantidade, esvaziarArtesao, atualizar };
 }

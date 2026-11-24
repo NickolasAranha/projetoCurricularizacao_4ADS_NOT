@@ -56,3 +56,39 @@ describe("montarMensagemPedido", () => {
     );
   });
 });
+
+import { reconciliarCarrinho, type DadosAtuais } from "@/lib/carrinho";
+
+describe("reconciliarCarrinho", () => {
+  const atuais = new Map<string, DadosAtuais>([
+    [
+      "p1",
+      {
+        titulo: "Bolo de pote de morango",
+        precoCentavos: 1500,
+        capa: "a1/nova.jpg",
+        artesao: { ...maria, whatsapp: "5511900000000" },
+      },
+    ],
+  ]);
+
+  it("atualiza preço, capa e WhatsApp com os dados publicados agora", () => {
+    const [item] = reconciliarCarrinho([bolo], atuais);
+    expect(item.precoCentavos).toBe(1500);
+    expect(item.capa).toBe("a1/nova.jpg");
+    expect(item.artesao.whatsapp).toBe("5511900000000");
+    expect(item.quantidade).toBe(2);
+  });
+
+  it("tira do carrinho o produto que saiu do ar", () => {
+    expect(reconciliarCarrinho([bolo, banco], atuais).map((i) => i.produtoId)).toEqual(["p1"]);
+  });
+
+  it("devolve a mesma lista quando nada mudou", () => {
+    const iguais = new Map<string, DadosAtuais>([
+      ["p1", { titulo: bolo.titulo, precoCentavos: bolo.precoCentavos, capa: bolo.capa, artesao: bolo.artesao }],
+    ]);
+    const entrada = [bolo];
+    expect(reconciliarCarrinho(entrada, iguais)).toBe(entrada);
+  });
+});

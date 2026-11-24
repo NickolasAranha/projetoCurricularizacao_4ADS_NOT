@@ -36,3 +36,21 @@ export function agruparPorArtesao(itens: ItemCarrinho[]): GrupoCarrinho[] {
   }
   return [...grupos.values()];
 }
+
+export type DadosAtuais = Pick<ItemCarrinho, "titulo" | "precoCentavos" | "capa" | "artesao">;
+
+export function reconciliarCarrinho(itens: ItemCarrinho[], atuais: Map<string, DadosAtuais>): ItemCarrinho[] {
+  let mudou = false;
+  const resultado: ItemCarrinho[] = [];
+  for (const item of itens) {
+    const atual = atuais.get(item.produtoId);
+    if (!atual) {
+      mudou = true;
+      continue;
+    }
+    const novo = { ...item, ...atual };
+    if (JSON.stringify(novo) !== JSON.stringify(item)) mudou = true;
+    resultado.push(novo);
+  }
+  return mudou ? resultado : itens;
+}

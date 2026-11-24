@@ -7,6 +7,7 @@ import { parseReais } from "@/lib/dinheiro";
 import { camposEditados } from "@/lib/campos-editados";
 import { interpretarRespostaIA, LIMITE_TITULO } from "@/lib/ia/esquema";
 import type { Atributo } from "@/lib/tipos";
+import { lerRespostaIA } from "@/lib/produto-privado";
 
 export type EstadoRevisao = { erro?: string; salvo?: "rascunho" | "publicado" };
 
@@ -71,9 +72,14 @@ export async function publicar(_anterior: EstadoRevisao, form: FormData): Promis
   if (faltando.length) return { erro: `Falta preencher ${faltando.join(", ")}.` };
 
   const supabase = await criarClienteServidor();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { erro: "Sua sessão expirou. Entre de novo." };
+
   const { data: atual } = await supabase
     .from("produtos")
-    .select("status, publicado_em, ia_resposta")
+    .select("status, publicado_em")
     .eq("id", campos.id)
     .single();
   if (!atual) return { erro: "Produto não encontrado." };
@@ -97,7 +103,7 @@ export async function publicar(_anterior: EstadoRevisao, form: FormData): Promis
     .maybeSingle();
 
   if (sessao) {
-    const ia = interpretarRespostaIA(atual.ia_resposta);
+    const ia = interpretarRespostaIA(await lerRespostaIA(campos.id, user.id));
     const editados = camposEditados(
       {
         titulo: ia.titulo,

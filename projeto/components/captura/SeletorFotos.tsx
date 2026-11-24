@@ -1,17 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { criarClienteNavegador } from "@/lib/supabase/navegador";
 import { reduzirFoto } from "@/lib/imagem";
+import { anexarFotos, MAX_FOTOS, type FotoEnviada } from "@/lib/fotos";
 
-export type FotoEnviada = { path: string; previa: string };
-
-const MAX_FOTOS = 4;
+export type { FotoEnviada };
 
 type Props = {
   userId: string;
   fotos: FotoEnviada[];
-  aoMudar: (fotos: FotoEnviada[]) => void;
+  aoMudar: Dispatch<SetStateAction<FotoEnviada[]>>;
 };
 
 export function SeletorFotos({ userId, fotos, aoMudar }: Props) {
@@ -28,7 +27,6 @@ export function SeletorFotos({ userId, fotos, aoMudar }: Props) {
     setErro(null);
     setEnviando((n) => n + arquivos.length);
     const supabase = criarClienteNavegador();
-    const novas: FotoEnviada[] = [];
     for (const arquivo of arquivos) {
       try {
         const reduzida = await reduzirFoto(arquivo);
@@ -37,23 +35,22 @@ export function SeletorFotos({ userId, fotos, aoMudar }: Props) {
           .from("produtos-fotos")
           .upload(path, reduzida, { contentType: "image/jpeg" });
         if (error) throw error;
-        novas.push({ path, previa: URL.createObjectURL(reduzida) });
+        const nova = { path, previa: URL.createObjectURL(reduzida) };
+        aoMudar((atuais) => anexarFotos(atuais, [nova]));
       } catch {
         setErro("Uma foto não foi enviada. Confira a internet e tente de novo.");
       } finally {
         setEnviando((n) => n - 1);
       }
     }
-    aoMudar([...fotos, ...novas]);
   }
 
   function remover(indice: number) {
-    aoMudar(fotos.filter((_, i) => i !== indice));
+    aoMudar((atuais) => atuais.filter((_, i) => i !== indice));
   }
 
   function usarComoCapa(indice: number) {
-    const escolhida = fotos[indice];
-    aoMudar([escolhida, ...fotos.filter((_, i) => i !== indice)]);
+    aoMudar((atuais) => [atuais[indice], ...atuais.filter((_, i) => i !== indice)]);
   }
 
   return (

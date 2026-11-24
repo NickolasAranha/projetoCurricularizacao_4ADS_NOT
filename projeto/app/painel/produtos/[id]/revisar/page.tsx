@@ -5,6 +5,7 @@ import { urlPublicaFoto } from "@/lib/storage";
 import { categoriaPorId } from "@/lib/categorias";
 import { interpretarRespostaIA } from "@/lib/ia/esquema";
 import { FormRevisao } from "@/components/painel/FormRevisao";
+import { lerRespostaIA } from "@/lib/produto-privado";
 import type { Atributo, StatusProduto } from "@/lib/tipos";
 
 export const metadata: Metadata = { title: "Revisar produto" };
@@ -21,7 +22,7 @@ export default async function PaginaRevisar(props: PageProps<"/painel/produtos/[
 
   const { data: produto } = await supabase
     .from("produtos")
-    .select("id, status, titulo, descricao, categoria_id, atributos, preco_centavos, ia_resposta, artesao_id")
+    .select("id, status, titulo, descricao, categoria_id, atributos, preco_centavos, artesao_id")
     .eq("id", id)
     .eq("artesao_id", user.id)
     .maybeSingle();
@@ -33,7 +34,7 @@ export default async function PaginaRevisar(props: PageProps<"/painel/produtos/[
     .eq("produto_id", id)
     .order("ordem");
 
-  const transcricao = interpretarRespostaIA(produto.ia_resposta).transcricao;
+  const transcricao = interpretarRespostaIA(await lerRespostaIA(produto.id, user.id)).transcricao;
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const precoTexto = produto.preco_centavos ? (produto.preco_centavos / 100).toFixed(2).replace(".", ",") : "";
 
