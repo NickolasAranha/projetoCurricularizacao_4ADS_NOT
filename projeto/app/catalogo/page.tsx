@@ -3,6 +3,7 @@ import { listarPublicados } from "@/lib/consultas";
 import { CATEGORIAS } from "@/lib/categorias";
 import { FiltroCategorias } from "@/components/vitrine/FiltroCategorias";
 import { GradeProdutos } from "@/components/vitrine/CartaoProduto";
+import { RegistrarVisita } from "@/components/RegistrarVisita";
 
 export const metadata: Metadata = {
   title: "Catálogo",
@@ -17,6 +18,7 @@ export default async function PaginaCatalogo(props: PageProps<"/catalogo">) {
 
   return (
     <main className="mx-auto w-full max-w-5xl p-6">
+      <RegistrarVisita tipo="visita_catalogo" />
       <h1 className="titulo-pagina mb-6">{nomeCategoria ?? "Catálogo"}</h1>
       <div className="mb-8">
         <FiltroCategorias atual={nomeCategoria ? slug : undefined} />

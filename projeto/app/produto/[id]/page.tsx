@@ -6,6 +6,7 @@ import { urlPublicaFoto } from "@/lib/storage";
 import { formatarReais } from "@/lib/dinheiro";
 import { categoriaPorId } from "@/lib/categorias";
 import { AcoesProduto } from "@/components/carrinho/AcoesProduto";
+import { RegistrarVisita } from "@/components/RegistrarVisita";
 
 export async function generateMetadata(props: PageProps<"/produto/[id]">): Promise<Metadata> {
   const { id } = await props.params;
@@ -31,6 +32,7 @@ export default async function PaginaProduto(props: PageProps<"/produto/[id]">) {
 
   return (
     <main className="mx-auto w-full max-w-5xl p-6">
+      <RegistrarVisita tipo="visita_produto" artesaoId={produto.artesao.id} produtoId={produto.id} />
       <div className="grid gap-8 md:grid-cols-2">
         <section aria-label="Fotos" className="flex flex-col gap-3">
           {produto.fotos.map((foto, i) => (

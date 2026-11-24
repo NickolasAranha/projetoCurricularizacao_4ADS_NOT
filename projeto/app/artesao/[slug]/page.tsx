@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { buscarArtesaoPorSlug, listarPublicados } from "@/lib/consultas";
 import { urlPublicaFoto } from "@/lib/storage";
 import { GradeProdutos } from "@/components/vitrine/CartaoProduto";
+import { RegistrarVisita } from "@/components/RegistrarVisita";
 
 export async function generateMetadata(props: PageProps<"/artesao/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
@@ -36,6 +37,7 @@ export default async function PaginaArtesao(props: PageProps<"/artesao/[slug]">)
 
   return (
     <main className="mx-auto w-full max-w-5xl p-6">
+      <RegistrarVisita tipo="visita_vitrine" artesaoId={artesao.id} />
       <header className="mb-10 flex items-center gap-5">
         {artesao.foto_path && (
           // eslint-disable-next-line @next/next/no-img-element
