@@ -37,7 +37,7 @@ export default async function Inicio() {
               Chegou na banca
             </h2>
             <Link href="/catalogo" className="underline underline-offset-4">
-              Ver todos
+              Ver todos os produtos
             </Link>
           </div>
           <GradeProdutos produtos={produtos} />
