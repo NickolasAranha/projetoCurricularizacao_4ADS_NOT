@@ -61,6 +61,7 @@ npm test                     # roda os testes
 | `painel/novo/` | | Cadastrar produto (foto + áudio → IA) |
 | `painel/produtos/[id]/revisar/` | | Revisar e ajustar o anúncio que a IA gerou |
 | `painel/perfil/` | | Editar nome, WhatsApp e foto |
+| `painel/avaliacao/` | | Formulário "Depois": o artesão conta como foi usar o catálogo |
 | `metricas/` | `/metricas` | Indicadores do projeto (tempo de cadastro, conversão, usabilidade) |
 | `api/gerar-produto/` | | Endpoint que manda foto/áudio pro Gemini e devolve o anúncio |
 
@@ -74,7 +75,7 @@ Arquivos que se repetem nas pastas: `page.tsx` é a tela, `acoes.ts` são as *se
 | `captura/` | Fluxo de cadastrar produto: escolher fotos, gravar áudio, tela de "IA montando o anúncio" |
 | `carrinho/` | Botões de adicionar e comprar no WhatsApp, lista do carrinho, quantidade. O carrinho fica no navegador |
 | `conta/` | Formulários de criar conta e entrar |
-| `painel/` | Formulário de perfil, formulário de revisão do anúncio, lista de produtos do artesão |
+| `painel/` | Formulário de perfil, formulário de revisão do anúncio, formulário de avaliação, lista de produtos do artesão |
 | `vitrine/` | Cartão de produto, filtro de categorias, esqueleto de carregamento |
 
 ### `projeto/lib/`
@@ -88,6 +89,7 @@ Arquivos que se repetem nas pastas: `page.tsx` é a tela, `acoes.ts` são as *se
 | `dinheiro.ts` | Preço em centavos ↔ "R$ 12,50" |
 | `eventos.ts` | Registra visitas e cliques no WhatsApp para as métricas |
 | `kpi.ts`, `usabilidade.ts` | Cálculo dos indicadores e da nota SUS do formulário |
+| `avaliacao.ts` | Perguntas do formulário "Depois" e validação das respostas enviadas pelo painel |
 | `imagem.ts`, `fotos.ts`, `storage.ts` | Reduzir o tamanho das fotos antes do envio, limitar a 4 por produto e montar o link público da foto no Supabase Storage |
 | `audio.ts` | Escolhe o formato de gravação que o navegador suporta (webm, m4a ou ogg) |
 | `apelido.ts` | Transforma "Dona Maria" em `dona-maria` |
@@ -106,6 +108,7 @@ São os arquivos SQL que montam o banco. Rode na ordem (`0001`, `0002`, …) e *
 | `0003_storage.sql` | Pastas (buckets) das fotos |
 | `0004_kpis.sql` | Funções que calculam os indicadores |
 | `0005` a `0007` | Ajustes de usabilidade, privacidade e permissões |
+| `0008_avaliacao_no_painel.sql` | Formulário "Depois" respondido no painel: colunas das outras perguntas e permissão para o artesão enviar a própria resposta |
 
 ### `projeto/scripts/`
 

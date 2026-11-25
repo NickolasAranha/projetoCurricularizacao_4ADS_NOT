@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { arquivar, republicar } from "@/app/painel/produtos/[id]/revisar/acoes";
+import { BotaoExcluir } from "@/components/painel/BotaoExcluir";
 import { formatarReais } from "@/lib/dinheiro";
 import { urlPublicaFoto } from "@/lib/storage";
 import type { StatusProduto } from "@/lib/tipos";
@@ -33,7 +34,7 @@ export function ListaProdutos({ produtos }: { produtos: ItemPainel[] }) {
             <h2 className="mb-4 text-xl font-semibold">{titulo}</h2>
             <ul className="flex flex-col gap-4">
               {lista.map((p) => (
-                <li key={p.id} className="flex items-center gap-4">
+                <li key={p.id} className="item-produto flex flex-wrap items-center gap-x-4 gap-y-3">
                   {p.capa ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={urlPublicaFoto(p.capa)} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover" />
@@ -44,7 +45,7 @@ export function ListaProdutos({ produtos }: { produtos: ItemPainel[] }) {
                     <p className="truncate font-medium">{p.titulo || "Sem título"}</p>
                     {p.preco_centavos ? <p>{formatarReais(p.preco_centavos)}</p> : null}
                   </div>
-                  <div className="flex flex-col gap-2 sm:flex-row">
+                  <div className="acoes-produto flex shrink-0 flex-col gap-2 whitespace-nowrap sm:flex-row">
                     <Link href={`/painel/produtos/${p.id}/revisar`} className="botao-secundario">
                       {status === "rascunho" ? "Continuar" : "Editar"}
                     </Link>
@@ -58,6 +59,7 @@ export function ListaProdutos({ produtos }: { produtos: ItemPainel[] }) {
                         <button type="submit" className="botao-secundario w-full">Publicar de novo</button>
                       </form>
                     )}
+                    <BotaoExcluir id={p.id} titulo={p.titulo || "Sem título"} />
                   </div>
                 </li>
               ))}

@@ -1,8 +1,8 @@
 # Formulário Depois — "Como foi usar o catálogo"
 
-- Ferramenta: Google Forms (a criar).
+- Ferramenta: dentro do próprio site, no painel do artesão (`/painel/avaliacao`). A resposta fica ligada à conta do artesão, por isso a pergunta 2 (código) não aparece lá. Quem preferir responder fora do site (papel ou Google Forms) tem as respostas importadas pelo CSV com o código do participante.
 - Público: os 3–4 artesãos que usaram o aplicativo de verdade.
-- Quando aplicar: depois que cada artesão publicou pelo menos 2 produtos e o link circulou por alguns dias.
+- Quando aplicar: depois que cada artesão publicou pelo menos 2 produtos e o link circulou por alguns dias. No painel, o botão "Avaliar o catálogo" fica sempre ao lado de "Meu perfil", e o aviso para responder aparece a partir do 1º produto publicado. Os dois somem quando o artesão responde.
 - Tempo estimado: 5 minutos.
 - Objetivo: medir satisfação e facilidade (KPI 3) e permitir a comparação direta com o formulário Antes.
 

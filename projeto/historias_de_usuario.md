@@ -133,6 +133,14 @@ Personas:
 - Dado o CSV exportado do Google Forms, quando a equipe roda a importação, então cada resposta vira uma linha com o código do participante, as 10 respostas SUS, a pontuação SUS calculada, satisfação e facilidade.
 - Importar o mesmo arquivo duas vezes não duplica respostas.
 
+### HU19 — Responder a avaliação no painel
+**Como** artesão, **quero** responder o formulário Depois dentro do próprio painel, **para** dar minha opinião sem abrir outro link.
+
+- Depois que publico o 1º produto, o painel mostra o convite "Conte como foi usar o catálogo", e ao lado de "Meu perfil" fica o botão "Avaliar o catálogo". Os dois somem quando eu respondo.
+- A primeira tela pede o consentimento. Se eu disser "Não", nada é enviado.
+- As perguntas são as mesmas do formulário Depois, na mesma ordem; a pontuação SUS é calculada pelo banco.
+- Respondo uma vez só. Ninguém mais lê a minha resposta pelo site; `/metricas` mostra só as médias.
+
 ## Manutenção do catálogo
 
 ### HU14 — Editar perfil
@@ -147,3 +155,4 @@ Personas:
 - Dado um produto no meu painel, quando toco em "Editar", então abro a mesma tela de revisão e salvo as mudanças.
 - Quando toco em "Tirar do ar", então ele some das vitrines e fica no painel como arquivado; posso publicar de novo.
 - Editar não conta como novo cadastro nos indicadores.
+- Quando toco em "Excluir" e confirmo na tela, o produto some de vez, com as fotos e o áudio. O tempo de cadastro já medido continua nos indicadores.

@@ -134,6 +134,64 @@ h3 {
     color: var(--branco);
   }
 
+  /* Opção de resposta do formulário de avaliação (radio escondido dentro do rótulo) */
+  .opcao {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border: 1px solid var(--kraft-escuro);
+    border-radius: 10px;
+    background: var(--branco);
+    cursor: pointer;
+    transition:
+      background-color 150ms,
+      border-color 150ms;
+  }
+
+  .opcao-numero {
+    min-width: 48px;
+    padding: 10px 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .opcao:hover {
+    border-color: var(--tinta-suave);
+  }
+
+  .opcao:has(input:checked) {
+    background: var(--tinta);
+    border-color: var(--tinta);
+    color: var(--branco);
+  }
+
+  .opcao:has(input:focus-visible) {
+    outline: 3px solid var(--barro);
+    outline-offset: 2px;
+  }
+
+  /* Ao confirmar a exclusão, os botões descem para uma linha própria e o nome do produto não fica espremido */
+  .item-produto:has([data-confirmando]) .acoes-produto {
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Enquanto confirma, só a pergunta e os botões de sim/cancelar aparecem */
+  .item-produto:has([data-confirmando]) .acoes-produto > :not([data-confirmando]) {
+    display: none;
+  }
+
+  /* Aviso no painel convidando para a avaliação */
+  .convite {
+    padding: 18px 20px;
+    border: 1px solid var(--kraft-escuro);
+    border-left: 6px solid var(--musgo);
+    border-radius: 10px;
+    background: var(--branco);
+  }
+
   .aviso-erro {
     color: var(--erro);
     font-weight: 500;

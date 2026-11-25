@@ -31,7 +31,7 @@ Histórias e critérios de aceite: [`historias_de_usuario.md`](historias_de_usua
 | 17 | H13 | Página de métricas | HU13 | P1 | M |
 | 18 | H14 | Editar perfil (cidade, bio, foto) | HU14 | P1 | P |
 | 19 | H15 | Editar e arquivar produto publicado | HU15 | P2 | P |
-| 20 | E01 | Formulário Depois no Google Forms + termo de consentimento | — | P1 | P |
+| 20 | E01 | Formulário Depois dentro do painel do artesão + termo de consentimento | HU16 | P1 | P |
 | 21 | H16 | Importar respostas de usabilidade (CSV) | HU16 | P1 | P |
 | 22 | T05 | Revisão de texto e visual de todas as telas (limpeza de excessos) | — | P2 | P |
 | 23 | E02 | Análise dos dados e gráficos comparativos | — | P1 | M |

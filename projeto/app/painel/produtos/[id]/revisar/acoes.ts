@@ -8,6 +8,8 @@ import { camposEditados } from "@/lib/campos-editados";
 import { interpretarRespostaIA, LIMITE_TITULO } from "@/lib/ia/esquema";
 import type { Atributo } from "@/lib/tipos";
 import { lerRespostaIA } from "@/lib/produto-privado";
+import { criarClienteAdmin } from "@/lib/supabase/admin";
+import { caminhoPertenceAoUsuario } from "@/lib/caminhos";
 
 export type EstadoRevisao = { erro?: string; salvo?: "rascunho" | "publicado" };
 
@@ -135,6 +137,43 @@ export async function arquivar(id: string): Promise<void> {
   const supabase = await criarClienteServidor();
   await supabase.from("produtos").update({ status: "arquivado" }).eq("id", id);
   revalidatePath("/painel");
+}
+
+// Apaga o produto de vez, com as fotos e o áudio. As sessões de cadastro ficam
+// (sem o vínculo), então o tempo de cadastro já medido continua nos indicadores.
+export async function excluir(id: string): Promise<void> {
+  const supabase = await criarClienteServidor();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+
+  // O caminho do áudio é coluna privada: lido com a service role, sempre filtrando pelo dono.
+  const admin = criarClienteAdmin();
+  const { data: produto } = await admin
+    .from("produtos")
+    .select("status, audio_path, produto_fotos(storage_path), artesaos(slug)")
+    .eq("id", id)
+    .eq("artesao_id", user.id)
+    .maybeSingle();
+  if (!produto) return;
+
+  const { error } = await supabase.from("produtos").delete().eq("id", id).eq("artesao_id", user.id);
+  if (error) return;
+
+  const dono = (caminho: string | null | undefined): caminho is string =>
+    !!caminho && caminhoPertenceAoUsuario(caminho, user.id);
+  const fotos = ((produto.produto_fotos ?? []) as { storage_path: string }[]).map((f) => f.storage_path).filter(dono);
+  if (fotos.length) await admin.storage.from("produtos-fotos").remove(fotos);
+  if (dono(produto.audio_path)) await admin.storage.from("produtos-audio").remove([produto.audio_path]);
+
+  revalidatePath("/painel");
+  if (produto.status === "publicado") {
+    const slug = (produto.artesaos as { slug?: string } | null)?.slug;
+    revalidatePath("/catalogo");
+    revalidatePath(`/produto/${id}`);
+    if (slug) revalidatePath(`/artesao/${slug}`);
+  }
 }
 
 export async function republicar(id: string): Promise<void> {
