@@ -24,3 +24,6 @@ Thumbs.db
 *.log
 .vscode/
 projeto/scripts/amostras/
+
+# Backups compactados
+*.7z
