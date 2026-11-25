@@ -45,11 +45,3 @@ Histórias e critérios de aceite: [`historias_de_usuario.md`](historias_de_usua
 1. **Artesão consegue publicar** (itens 1–9): a partir daqui os artesãos do piloto já podem cadastrar.
 2. **Cliente consegue pedir** (itens 10–15): a partir daqui o link pode ir para clientes reais. Os KPIs passam a ser registrados.
 3. **Entregável acadêmico** (itens 16–24): métricas visíveis, formulário Depois aplicado, relatório pronto.
-
-## Riscos
-
-| Risco | Efeito | Resposta |
-|---|---|---|
-| Hydrogen não aceita áudio do iPhone/Android ou não está no plano gratuito | Cadastro por voz trava | T01 primeiro; troca de modelo já aprovada; texto sempre disponível |
-| Limite de requisições do plano gratuito | IA falha em horário de pico | Cair na revisão manual com mensagem amigável |
-| Pouco tráfego de clientes | Taxa de conversão com n pequeno | Artesãos divulgam o link desde o marco 2; relatório informa o n |
