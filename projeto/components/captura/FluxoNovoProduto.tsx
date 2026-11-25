@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SeletorFotos, type FotoEnviada } from "./SeletorFotos";
 import { GravadorAudio } from "./GravadorAudio";
+import { CarregandoAnuncio } from "./CarregandoAnuncio";
 import { iniciarSessaoCadastro } from "@/app/painel/novo/acoes";
 
 export function FluxoNovoProduto({ userId }: { userId: string }) {
@@ -14,6 +15,7 @@ export function FluxoNovoProduto({ userId }: { userId: string }) {
   const [audioPath, setAudioPath] = useState<string | null>(null);
   const [texto, setTexto] = useState("");
   const [gerando, setGerando] = useState(false);
+  const [pronto, setPronto] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
@@ -43,6 +45,7 @@ export function FluxoNovoProduto({ userId }: { userId: string }) {
       });
       if (!resposta.ok) throw new Error(String(resposta.status));
       const { produtoId, iaFalhou } = (await resposta.json()) as { produtoId: string; iaFalhou: boolean };
+      setPronto(true);
       router.push(`/painel/produtos/${produtoId}/revisar${iaFalhou ? "?ia=falhou" : ""}`);
     } catch {
       setGerando(false);
@@ -50,13 +53,7 @@ export function FluxoNovoProduto({ userId }: { userId: string }) {
     }
   }
 
-  if (gerando) {
-    return (
-      <p aria-live="polite" className="py-16 text-center text-lg">
-        Montando seu anúncio. Isso pode levar até um minuto.
-      </p>
-    );
-  }
+  if (gerando) return <CarregandoAnuncio pronto={pronto} />;
 
   return (
     <div className="flex flex-col gap-10">

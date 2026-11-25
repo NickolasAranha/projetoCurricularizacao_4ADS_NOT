@@ -163,4 +163,53 @@ h3 {
     background: var(--papel);
     box-shadow: inset 0 0 0 1px var(--kraft-escuro);
   }
+
+  /* Barra de progresso enquanto a IA monta o anúncio */
+  .progresso-trilho {
+    height: 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--borda) 55%, transparent);
+    overflow: hidden;
+  }
+
+  .progresso-barra {
+    position: relative;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--barro);
+    overflow: hidden;
+    transition:
+      width 600ms ease-out,
+      background-color 300ms;
+  }
+
+  .progresso-barra::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgb(251 248 242 / 0.35), transparent);
+    transform: translateX(-100%);
+    animation: progresso-brilho 1.8s ease-in-out infinite;
+  }
+
+  .progresso-barra[data-pronto="true"] {
+    background: var(--musgo);
+  }
+
+  .progresso-frase {
+    transition:
+      opacity 350ms ease,
+      transform 350ms ease;
+  }
+
+  .progresso-frase[data-saindo="true"] {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes progresso-brilho {
+  to {
+    transform: translateX(100%);
+  }
 }
